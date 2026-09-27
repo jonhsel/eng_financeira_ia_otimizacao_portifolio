@@ -1,0 +1,1292 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fronteira Eficiente e Otimização Matemática de Portfólio com IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:        #0d0d0d;
+    --ink-mid:    #3a3a3a;
+    --ink-light:  #6c757d;
+    --surface:    #f8f8f8;
+    --paper:      #f0eeeb;
+    --red:        #c23616;
+    --red-light:  #e74c3c;
+    --blue:       #4a69bd;
+    --blue-light: #6a89cc;
+    --amber:      #e1b12c;
+    --rule:       #d5d5d5;
+    --code-bg:    #111111;
+    --code-text:  #e0e0e0;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: #fff;
+    color: var(--ink);
+    font-family: 'Raleway', system-ui, sans-serif;
+    font-size: 17px;
+    line-height: 1.78;
+    font-weight: 400;
+  }
+
+  h1, h2, h3, .display {
+    font-family: 'Bebas Neue', 'Raleway', sans-serif;
+    letter-spacing: 0.01em;
+  }
+
+  /* ── PROGRESS BAR ── */
+  #progress {
+    position: fixed; top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--red), var(--amber));
+    width: 0%;
+    z-index: 999;
+    transition: width 0.1s linear;
+  }
+
+  /* ══════════════════════════════════════
+     HEADER
+     ══════════════════════════════════════ */
+  header {
+    background: var(--surface);
+    position: relative;
+    overflow: hidden;
+    border-bottom: 4px solid var(--ink);
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 8px;
+    background: var(--red);
+  }
+
+  .header-watermark {
+    position: absolute;
+    top: 24px; right: -60px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    line-height: 2;
+    color: rgba(0,0,0,0.035);
+    transform: rotate(10deg);
+    width: 560px;
+    pointer-events: none;
+    white-space: pre-line;
+    font-weight: 700;
+  }
+
+  .header-inner {
+    position: relative;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 64px 48px 56px 56px;
+  }
+
+  .header-meta {
+    font-family: 'Raleway', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .header-meta::before {
+    content: '';
+    width: 32px;
+    height: 2px;
+    background: var(--red);
+  }
+
+  .header-seal {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 2px solid var(--ink);
+    padding: 8px 20px;
+    margin-bottom: 28px;
+  }
+
+  .header-seal-icon { font-size: 1.3rem; }
+
+  .header-seal-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  h1 {
+    font-size: clamp(2.6rem, 6vw, 4.4rem);
+    font-weight: 400;
+    line-height: 1.04;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--red);
+  }
+
+  .header-sub {
+    font-size: 1.08rem;
+    color: var(--ink-light);
+    line-height: 1.65;
+    font-weight: 300;
+    max-width: 640px;
+    margin-bottom: 32px;
+  }
+
+  .header-logos {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    margin-bottom: 28px;
+    padding: 18px 22px;
+    background: rgba(0,0,0,0.03);
+    border: 1px solid var(--rule);
+    flex-wrap: wrap;
+  }
+
+  .header-logos-label {
+    font-family: 'Raleway', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+  }
+
+  .logo-badge { display: flex; align-items: center; gap: 9px; }
+  .logo-badge .badge-icon { font-size: 1.5rem; }
+  .logo-badge .badge-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.05rem;
+    letter-spacing: 0.03em;
+    color: var(--ink);
+  }
+  .logo-badge .badge-sub {
+    font-family: 'Raleway', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+  }
+  .logo-sep { width: 1px; height: 32px; background: var(--rule); }
+
+  .header-bar {
+    display: flex;
+    gap: 0;
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    margin-bottom: 24px;
+  }
+
+  .header-bar-item {
+    flex: 1;
+    padding: 14px 16px;
+    border-right: 1px solid var(--rule);
+    text-align: center;
+  }
+  .header-bar-item:last-child { border-right: none; }
+
+  .hb-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--red);
+    display: block;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  .hb-lbl {
+    font-family: 'Raleway', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+  }
+
+  .header-author {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .author-dot {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    background: var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.05em;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .author-info { font-size: 13px; color: var(--ink-light); }
+  .author-info strong {
+    display: block;
+    color: var(--ink);
+    font-weight: 700;
+    font-size: 14.5px;
+    font-family: 'Raleway', sans-serif;
+  }
+
+  /* ══════════════════════════════════════
+     TOC
+     ══════════════════════════════════════ */
+  .toc-bar {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 20px 48px 20px 56px;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px 20px;
+    align-items: center;
+  }
+
+  .toc-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-right: 8px;
+  }
+
+  .toc-bar a {
+    font-family: 'Raleway', sans-serif;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-light);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .toc-bar a:hover { color: var(--red); }
+  .toc-bar a::before { content: '→ '; color: var(--rule); }
+
+  /* ══════════════════════════════════════
+     ARTICLE BODY
+     ══════════════════════════════════════ */
+  .article-body {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 56px 48px 80px 56px;
+  }
+
+  .lead {
+    font-size: 1.16em;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--ink-mid);
+    border-left: 4px solid var(--red);
+    padding-left: 24px;
+    margin-bottom: 56px;
+  }
+  .lead strong { color: var(--ink); font-weight: 700; }
+
+  h2 {
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--ink);
+    margin: 72px 0 22px;
+    padding-top: 40px;
+    border-top: 3px solid var(--ink);
+    position: relative;
+    text-transform: uppercase;
+    letter-spacing: 0.015em;
+  }
+
+  h2 .section-tag {
+    font-family: 'Raleway', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red);
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  h3 {
+    font-size: 1.55rem;
+    font-weight: 400;
+    color: var(--ink);
+    margin: 36px 0 14px;
+    letter-spacing: 0.01em;
+  }
+
+  p { margin-bottom: 18px; }
+  strong { font-weight: 700; }
+  em { font-style: italic; }
+
+  /* ── BLOCKQUOTE ── */
+  blockquote {
+    border-left: 4px solid var(--red);
+    padding: 20px 24px;
+    margin: 32px 0;
+    background: var(--paper);
+  }
+  blockquote p {
+    margin: 0;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.35em;
+    letter-spacing: 0.01em;
+    color: var(--ink-mid);
+    line-height: 1.4;
+    text-transform: none;
+  }
+
+  /* ── CODE ── */
+  code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.82em;
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 2px 7px;
+    border-radius: 2px;
+  }
+
+  .code-block {
+    background: var(--code-bg);
+    color: var(--code-text);
+    margin: 28px 0;
+    overflow: hidden;
+    font-family: 'Courier New', monospace;
+    font-size: 12.5px;
+    line-height: 1.7;
+    border-left: 4px solid var(--red);
+  }
+
+  .code-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .code-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--red-light);
+  }
+
+  .code-title {
+    margin-left: auto;
+    font-size: 10px;
+    color: rgba(255,255,255,0.3);
+  }
+
+  .code-block pre { padding: 20px; overflow-x: auto; margin: 0; }
+
+  .tk-kw  { color: #c678dd; }
+  .tk-str { color: #98c379; }
+  .tk-fn  { color: #61afef; }
+  .tk-cmt { color: #5c6370; font-style: italic; }
+  .tk-cls { color: #e5c07b; }
+  .tk-var { color: #e0e0e0; }
+  .tk-num { color: #d19a66; }
+
+  /* ── CALLOUT ESCURO ── */
+  .callout {
+    background: var(--ink);
+    color: #fff;
+    padding: 36px 40px;
+    margin: 48px 0;
+    position: relative;
+    border-left: 4px solid var(--red);
+  }
+  .callout-tag {
+    font-family: 'Raleway', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red-light);
+    margin-bottom: 12px;
+  }
+  .callout p { font-size: 1em; line-height: 1.75; color: rgba(255,255,255,0.85); margin: 0; }
+  .callout strong { color: var(--red-light); }
+
+  /* ── NOTA LATERAL ── */
+  .side-note {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 20px 24px;
+    margin: 28px 0;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--ink-mid);
+    position: relative;
+  }
+  .side-note::before {
+    content: 'NOTA';
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: var(--blue);
+    position: absolute;
+    top: -10px; left: 16px;
+    background: var(--paper);
+    padding: 0 8px;
+  }
+  .side-note strong { color: var(--ink); }
+
+  /* ── STAT STRIP ── */
+  .filing-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border: 2px solid var(--ink);
+    margin: 40px 0;
+  }
+  @media (max-width: 600px) { .filing-strip { grid-template-columns: 1fr 1fr; } }
+
+  .filing-item { padding: 24px 16px; border-right: 1px solid var(--rule); text-align: center; }
+  .filing-item:last-child { border-right: none; }
+
+  .filing-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.6rem;
+    color: var(--red);
+    display: block;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .filing-lbl {
+    font-family: 'Raleway', sans-serif;
+    font-size: 9.5px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-light);
+  }
+
+  /* ── LAYERS GRID (arquitetura) ── */
+  .layers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0;
+    margin: 36px 0 48px;
+    border: 2px solid var(--ink);
+    overflow: hidden;
+  }
+  .layer-card {
+    padding: 26px 20px;
+    border-right: 1px solid var(--rule);
+    position: relative;
+    background: #fff;
+    transition: background 0.2s;
+  }
+  .layer-card:last-child { border-right: none; }
+  .layer-card:hover { background: var(--paper); }
+  .layer-card::before {
+    content: '';
+    display: block;
+    height: 3px; width: 100%;
+    position: absolute; top: 0; left: 0;
+    background: var(--red);
+    opacity: 0.3;
+  }
+  .layer-card:nth-child(1)::before { opacity: 0.25; }
+  .layer-card:nth-child(2)::before { opacity: 0.5; }
+  .layer-card:nth-child(3)::before { opacity: 0.75; }
+  .layer-card:nth-child(4)::before { opacity: 1; }
+  .layer-icon { font-size: 1.7rem; margin-bottom: 10px; display: block; }
+  .layer-tag {
+    font-family: 'Raleway', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .layer-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.15rem;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  .layer-desc { font-size: 13px; color: var(--ink-light); line-height: 1.6; }
+
+  /* ── FLOW STEPS ── */
+  .flow-steps { counter-reset: step; list-style: none; margin: 28px 0; }
+  .flow-steps li {
+    counter-increment: step;
+    display: flex; gap: 16px; align-items: flex-start;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 15.5px; line-height: 1.65;
+  }
+  .flow-steps li:last-child { border-bottom: none; }
+  .flow-steps li::before {
+    content: counter(step, decimal-leading-zero);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    color: var(--red);
+    flex-shrink: 0;
+    padding-top: 2px;
+    min-width: 28px;
+  }
+
+  /* ── TABLE ── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 28px 0;
+    font-size: 14px;
+  }
+  .data-table th {
+    background: var(--ink);
+    color: #fff;
+    font-family: 'Raleway', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 12px 16px;
+    text-align: left;
+  }
+  .data-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  .data-table tr:nth-child(even) td { background: var(--paper); }
+  .data-table td:first-child {
+    font-family: 'Courier New', monospace;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--red);
+  }
+
+  /* ── DOSSIER GRID (ativos) ── */
+  .dossier-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    border: 2px solid var(--ink);
+    margin: 32px 0;
+  }
+  @media (max-width: 700px) { .dossier-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .dossier-card {
+    padding: 18px 14px;
+    border-right: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    text-align: center;
+    transition: background 0.2s;
+  }
+  .dossier-card:hover { background: var(--paper); }
+  .dc-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.03em;
+    color: var(--red);
+  }
+  .dc-title {
+    font-family: 'Raleway', sans-serif;
+    font-size: 10.5px;
+    color: var(--ink-light);
+    margin-top: 4px;
+  }
+
+  /* ── HIGHLIGHT ── */
+  .dossier-highlight {
+    background: var(--ink);
+    color: #fff;
+    padding: 32px;
+    margin: 32px 0;
+    border-left: 4px solid var(--red);
+    position: relative;
+  }
+  .dossier-highlight .dc-num { color: var(--red-light); font-size: 1.1rem; }
+  .dossier-highlight .dc-title {
+    color: #fff;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.02em;
+    margin-top: 8px;
+  }
+  .dossier-highlight p { color: rgba(255,255,255,0.72); font-size: 0.92em; margin: 12px 0 0; }
+  .dossier-highlight .stamp {
+    position: absolute; top: 14px; right: 18px;
+    font-family: 'Raleway', sans-serif;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--red);
+    border: 1px solid var(--red);
+    padding: 2px 8px;
+  }
+
+  /* ── CONCLUSION ── */
+  .conclusion {
+    border-top: 3px solid var(--ink);
+    border-bottom: 3px solid var(--ink);
+    padding: 40px 0;
+    margin: 64px 0 40px;
+    position: relative;
+  }
+  .conclusion-tag {
+    font-family: 'Raleway', sans-serif;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 20px;
+  }
+  .conclusion p { margin-bottom: 16px; color: var(--ink-mid); }
+  .conclusion p:last-child { margin-bottom: 0; }
+  .conclusion strong { color: var(--ink); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--ink);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 36px 20px;
+    font-size: 13px;
+    font-family: 'Raleway', sans-serif;
+  }
+  footer strong { color: var(--red-light); font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.03em; font-size: 15px; }
+
+  /* ── FADE-IN ── */
+  .fi { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
+  .fi.v { opacity: 1; transform: none; }
+
+  /* ── ORNAMENT ── */
+  .ornament {
+    text-align: center;
+    margin: 48px 0;
+    color: var(--red);
+    font-size: 1.1rem;
+    letter-spacing: 0.5em;
+    opacity: 0.35;
+    user-select: none;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .header-inner { padding: 40px 20px 36px 28px; }
+    .toc-bar { padding: 16px 20px 16px 28px; }
+    .article-body { padding: 36px 20px 60px 28px; }
+    .callout { padding: 28px 20px; }
+    .conclusion { padding: 28px 0; }
+    h1 { font-size: 2.1rem; }
+    .dossier-grid { grid-template-columns: 1fr 1fr; }
+    .header-bar { flex-wrap: wrap; }
+    .header-bar-item { min-width: 50%; }
+    .layers-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<!-- ════════════════ HEADER ════════════════ -->
+<header>
+  <div class="header-watermark">minimize(eng_ia_neg_sharpe, init_guess, method='SLSQP', bounds=limites, constraints=cons) sharpe_arr[x] = ret_arr[x] / vol_arr[x] cov_matrix = retornos.cov() weights /= np.sum(weights) frontier_x.append(resultado['fun'])</div>
+
+  <div class="header-inner">
+    <div class="header-meta">
+      <span>Projeto 01 - Engenharia Financeira com IA</span>
+    </div>
+
+    <div class="header-seal">
+      <span class="header-seal-icon">📈</span>
+      <span class="header-seal-text">Otimização de Portfólio</span>
+    </div>
+
+    <h1>Fronteira Eficiente e <em>Otimização Matemática</em> de Portfólio</h1>
+
+    <p class="header-sub">
+      Como simulação de Monte Carlo, o Índice de Sharpe e otimização não linear com SciPy se combinam
+      para encontrar, entre milhares de combinações possíveis, a alocação de capital que maximiza o
+      retorno ajustado ao risco em uma carteira de dez ativos de tecnologia.
+    </p>
+
+    <div class="header-logos">
+      <span class="header-logos-label">Stack</span>
+      <div class="logo-badge">
+        <span class="badge-icon">🐍</span>
+        <div><div class="badge-text">Python</div><div class="badge-sub">Linguagem</div></div>
+      </div>
+      <div class="logo-sep"></div>
+      <div class="logo-badge">
+        <span class="badge-icon">📊</span>
+        <div><div class="badge-text">yfinance</div><div class="badge-sub">Dados de mercado</div></div>
+      </div>
+      <div class="logo-sep"></div>
+      <div class="logo-badge">
+        <span class="badge-icon">🧮</span>
+        <div><div class="badge-text">NumPy · SciPy</div><div class="badge-sub">Álgebra &amp; otimização</div></div>
+      </div>
+      <div class="logo-sep"></div>
+      <div class="logo-badge">
+        <span class="badge-icon">📉</span>
+        <div><div class="badge-text">Matplotlib</div><div class="badge-sub">Visualização</div></div>
+      </div>
+    </div>
+
+    <div class="header-bar">
+      <div class="header-bar-item"><span class="hb-val">10</span><span class="hb-lbl">Ativos Financeiros</span></div>
+      <div class="header-bar-item"><span class="hb-val">10K</span><span class="hb-lbl">Portfólios Simulados</span></div>
+      <div class="header-bar-item"><span class="hb-val">SLSQP</span><span class="hb-lbl">Método de Otimização</span></div>
+      <div class="header-bar-item"><span class="hb-val">3m</span><span class="hb-lbl">Janela de Análise</span></div>
+    </div>
+
+    <div class="header-author">
+      <div class="author-dot">JS</div>
+      <div class="author-info">
+        <strong>Jonh Selmo de Souza do Nascimento</strong>
+        AI Engineer · Formação em Engenharia Financeira com Inteligência Artificial
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════════ TOC ════════════════ -->
+<div class="toc-bar">
+  <span class="toc-label">Índice</span>
+  <a href="#s1">O Problema</a>
+  <a href="#s2">Teoria de Markowitz</a>
+  <a href="#s3">Arquitetura</a>
+  <a href="#s4">Dados</a>
+  <a href="#s5">Monte Carlo</a>
+  <a href="#s6">Índice de Sharpe</a>
+  <a href="#s7">Otimização SLSQP</a>
+  <a href="#s8">Fronteira Eficiente</a>
+  <a href="#s9">Security Market Line</a>
+  <a href="#s10">Resultados</a>
+  <a href="#s11">Conclusão</a>
+</div>
+
+<!-- ════════════════ BODY ════════════════ -->
+<div class="article-body">
+
+  <p class="lead fi">
+    Diante de dez ativos financeiros, existem <strong>infinitas formas de distribuir o capital</strong> entre eles.
+    Cada combinação de pesos gera um portfólio com retorno esperado e risco próprios — e a maioria dessas
+    combinações é ineficiente, entregando menos retorno do que seria possível para o mesmo nível de risco.
+    Este projeto documenta a construção de um pipeline quantitativo que combina <strong>simulação estocástica</strong>
+    e <strong>otimização matemática não linear</strong> para identificar, dentro desse universo de possibilidades,
+    os portfólios que realmente valem a pena.
+  </p>
+
+  <!-- ─── SEÇÃO 1 ─── -->
+  <h2 id="s1" class="fi"><span class="section-tag">Contexto</span>O Problema da Alocação Ótima</h2>
+
+  <p class="fi">
+    Um investidor com capital para distribuir entre <strong>AAPL, AMD, AMZN, GOOGL, META, MSFT, NFLX,
+    NVDA, SONY</strong> e <strong>TSLA</strong> enfrenta uma pergunta aparentemente simples — quanto alocar
+    em cada ativo? — mas que esconde um espaço de busca combinatório enorme. Pesos podem variar continuamente
+    entre 0% e 100%, sujeitos apenas à restrição de que a soma seja igual a 100% do capital disponível.
+  </p>
+
+  <p class="fi">
+    Tentar avaliar essas combinações manualmente é inviável. A resposta da Engenharia Financeira para esse
+    problema vem de duas frentes complementares: primeiro, <strong>simular</strong> milhares de combinações
+    aleatórias de pesos para mapear o comportamento aproximado do espaço de risco e retorno; depois,
+    <strong>otimizar matematicamente</strong> para encontrar, com precisão, o ponto exato que maximiza o
+    retorno ajustado ao risco.
+  </p>
+
+  <blockquote class="fi">
+    <p>Entre todas as carteiras possíveis, qual delas entrega o maior retorno para o menor risco assumido?</p>
+  </blockquote>
+
+  <p class="fi">
+    É essa pergunta — formulada matematicamente por Harry Markowitz em 1952 e ainda hoje o alicerce da
+    Moderna Teoria de Portfólio — que este projeto resolve computacionalmente, com dados reais de mercado
+    baixados via <code>yfinance</code> e otimização numérica via <code>scipy.optimize</code>.
+  </p>
+
+  <div class="ornament fi">— ✦ —</div>
+
+  <!-- ─── SEÇÃO 2 ─── -->
+  <h2 id="s2" class="fi"><span class="section-tag">Fundamentos</span>Teoria da Média-Variância</h2>
+
+  <p class="fi">
+    A Teoria Moderna de Portfólio parte de uma constatação simples: o retorno esperado de uma carteira é a
+    <strong>média ponderada</strong> dos retornos de seus ativos, mas o risco da carteira não é a média
+    ponderada dos riscos individuais — porque os ativos não se movem de forma independente. É aqui que entra
+    a <strong>matriz de covariância</strong>, que mede como os retornos de cada par de ativos se movimentam
+    conjuntamente.
+  </p>
+
+  <p class="fi">
+    Quando dois ativos têm baixa correlação — ou correlação negativa — combiná-los reduz a volatilidade do
+    portfólio sem sacrificar retorno. Esse efeito, chamado de <strong>diversificação</strong>, é a única
+    forma de "almoço grátis" reconhecida em finanças: reduzir risco sem reduzir retorno esperado.
+  </p>
+
+  <div class="callout fi">
+    <div class="callout-tag">Conceito-Chave</div>
+    <p>
+      A <strong>Fronteira Eficiente</strong> é o conjunto de portfólios que oferecem o maior retorno esperado
+      possível para cada nível de risco — ou, de forma equivalente, o menor risco possível para cada nível
+      de retorno desejado. Qualquer portfólio fora dessa fronteira é, por definição, subótimo: existe sempre
+      uma alternativa melhor no mesmo nível de risco.
+    </p>
+  </div>
+
+  <p class="fi">
+    O <strong>Índice de Sharpe</strong> resume esse trade-off em um único número: a razão entre o retorno em
+    excesso sobre a taxa livre de risco e a volatilidade do portfólio. Quanto maior o Sharpe, melhor o retorno
+    obtido por unidade de risco assumida — valores acima de 1 são considerados bons, acima de 2 muito bons, e
+    acima de 3, excepcionais.
+  </p>
+
+  <div class="ornament fi">— ✦ —</div>
+
+  <!-- ─── SEÇÃO 3 ─── -->
+  <h2 id="s3" class="fi"><span class="section-tag">Arquitetura</span>Pipeline do Projeto</h2>
+
+  <p class="fi">
+    O projeto foi estruturado em quatro etapas sequenciais, cada uma alimentando a próxima — da coleta de
+    dados brutos até a interpretação gráfica dos resultados otimizados.
+  </p>
+
+  <div class="layers-grid fi">
+    <div class="layer-card">
+      <span class="layer-icon">📥</span>
+      <span class="layer-tag">Etapa 1</span>
+      <div class="layer-title">Dados</div>
+      <div class="layer-desc">Download de preços históricos de 10 ativos via yfinance e cálculo dos retornos percentuais diários.</div>
+    </div>
+    <div class="layer-card">
+      <span class="layer-icon">🎲</span>
+      <span class="layer-tag">Etapa 2</span>
+      <div class="layer-title">Simulação</div>
+      <div class="layer-desc">Geração de 10.000 combinações aleatórias de pesos e cálculo de retorno, volatilidade e Sharpe para cada uma.</div>
+    </div>
+    <div class="layer-card">
+      <span class="layer-icon">🧮</span>
+      <span class="layer-tag">Etapa 3</span>
+      <div class="layer-title">Otimização</div>
+      <div class="layer-desc">Uso de scipy.optimize.minimize com o método SLSQP para encontrar analiticamente os pesos ótimos.</div>
+    </div>
+    <div class="layer-card">
+      <span class="layer-icon">📈</span>
+      <span class="layer-tag">Etapa 4</span>
+      <div class="layer-title">Visualização</div>
+      <div class="layer-desc">Plotagem da nuvem de portfólios, da fronteira eficiente e da Security Market Line com Matplotlib.</div>
+    </div>
+  </div>
+
+  <div class="ornament fi">— ✦ —</div>
+
+  <!-- ─── SEÇÃO 4 ─── -->
+  <h2 id="s4" class="fi"><span class="section-tag">Dados</span>Coleta e Preparação</h2>
+
+  <p class="fi">
+    O portfólio analisado reúne dez das maiores empresas de tecnologia listadas em bolsa, com dados de
+    fechamento diário baixados diretamente da API do Yahoo Finance para o período de <strong>janeiro a
+    março de 2024</strong>.
+  </p>
+
+  <div class="dossier-grid fi">
+    <div class="dossier-card"><div class="dc-num">AAPL</div><div class="dc-title">Apple</div></div>
+    <div class="dossier-card"><div class="dc-num">AMD</div><div class="dc-title">AMD</div></div>
+    <div class="dossier-card"><div class="dc-num">AMZN</div><div class="dc-title">Amazon</div></div>
+    <div class="dossier-card"><div class="dc-num">GOOGL</div><div class="dc-title">Alphabet</div></div>
+    <div class="dossier-card"><div class="dc-num">META</div><div class="dc-title">Meta</div></div>
+    <div class="dossier-card"><div class="dc-num">MSFT</div><div class="dc-title">Microsoft</div></div>
+    <div class="dossier-card"><div class="dc-num">NFLX</div><div class="dc-title">Netflix</div></div>
+    <div class="dossier-card"><div class="dc-num">NVDA</div><div class="dc-title">NVIDIA</div></div>
+    <div class="dossier-card"><div class="dc-num">SONY</div><div class="dc-title">Sony</div></div>
+    <div class="dossier-card"><div class="dc-num">TSLA</div><div class="dc-title">Tesla</div></div>
+  </div>
+
+  <div class="code-block fi">
+    <div class="code-header">
+      <span class="code-tag">Python</span>
+      <span class="code-title">coleta_dados.py</span>
+    </div>
+    <pre><code><span class="tk-cmt"># Define os assets e faz o download dos dados de fechamento</span>
+df_eng_ia = yf.<span class="tk-fn">download</span>([<span class="tk-str">'NVDA'</span>, <span class="tk-str">'AMZN'</span>, <span class="tk-str">'GOOGL'</span>, <span class="tk-str">'AMD'</span>, <span class="tk-str">'MSFT'</span>,
+                       <span class="tk-str">'AAPL'</span>, <span class="tk-str">'TSLA'</span>, <span class="tk-str">'SONY'</span>, <span class="tk-str">'META'</span>, <span class="tk-str">'NFLX'</span>],
+                      start = <span class="tk-str">'2024-01-01'</span>, end = <span class="tk-str">'2024-03-31'</span>)
+
+df_eng_ia = df_eng_ia[<span class="tk-str">'Close'</span>]
+
+<span class="tk-cmt"># Retornos percentuais diários — a base de toda a análise de risco</span>
+retornos = df_eng_ia.<span class="tk-fn">pct_change</span>().<span class="tk-fn">dropna</span>()
+media_retornos = retornos.<span class="tk-fn">mean</span>()
+cov_matrix = retornos.<span class="tk-fn">cov</span>()</code></pre>
+  </div>
+
+  <p class="fi">
+    O método <code>pct_change()</code> calcula a variação percentual entre cada preço de fechamento e o
+    anterior — a métrica padrão para medir retorno diário em séries financeiras. A <strong>matriz de
+    covariância</strong> resultante de <code>retornos.cov()</code> é o insumo central de todo o processo:
+    é ela que captura como os dez ativos se movem em conjunto e permite calcular a volatilidade real de
+    qualquer combinação de pesos entre eles.
+  </p>
+
+  <div class="ornament fi">— ✦ —</div>
+
+  <!-- ─── SEÇÃO 5 ─── -->
+  <h2 id="s5" class="fi"><span class="section-tag">Simulação</span>Monte Carlo com 10.000 Portfólios</h2>
+
+  <p class="fi">
+    Antes de recorrer a métodos analíticos, o projeto explora o espaço de soluções por força bruta
+    controlada: <strong>10.000 portfólios</strong> são gerados com pesos aleatórios normalizados — cada
+    conjunto de pesos soma exatamente 100% do capital — e, para cada um, calculam-se retorno esperado,
+    volatilidade e Índice de Sharpe.
+  </p>
+
+  <div class="code-block fi">
+    <div class="code-header">
+      <span class="code-tag">Python</span>
+      <span class="code-title">simulacao_monte_carlo.py</span>
+    </div>
+    <pre><code>num_ports = <span class="tk-num">10000</span>
+all_pesos = np.<span class="tk-fn">zeros</span>((num_ports, <span class="tk-num">10</span>))
+ret_arr   = np.<span class="tk-fn">zeros</span>(num_ports)
+vol_arr   = np.<span class="tk-fn">zeros</span>(num_ports)
+sharpe_arr = np.<span class="tk-fn">zeros</span>(num_ports)
+
+<span class="tk-kw">for</span> x <span class="tk-kw">in</span> <span class="tk-fn">range</span>(num_ports):
+
+    <span class="tk-cmt"># Pesos aleatórios normalizados — soma sempre igual a 1</span>
+    pesos = np.<span class="tk-fn">array</span>(np.random.<span class="tk-fn">random</span>(<span class="tk-num">10</span>))
+    pesos = pesos / np.<span class="tk-fn">sum</span>(pesos)
+    all_pesos[x, :] = pesos
+
+    <span class="tk-cmt"># Retorno esperado do portfólio</span>
+    ret_arr[x] = np.<span class="tk-fn">sum</span>(media_retornos * pesos * <span class="tk-fn">len</span>(retornos))
+
+    <span class="tk-cmt"># Volatilidade esperada — via matriz de covariância</span>
+    vol_arr[x] = np.<span class="tk-fn">sqrt</span>(np.<span class="tk-fn">dot</span>(pesos.T, np.<span class="tk-fn">dot</span>(cov_matrix * <span class="tk-fn">len</span>(retornos), pesos)))
+
+    <span class="tk-cmt"># Índice de Sharpe do portfólio</span>
+    sharpe_arr[x] = ret_arr[x] / vol_arr[x]</code></pre>
+  </div>
+
+  <p class="fi">
+    Cada iteração do laço representa um portfólio hipotético completo — uma alocação plausível de capital
+    entre os dez ativos. Ao final das 10.000 iterações, os três vetores <code>ret_arr</code>,
+    <code>vol_arr</code> e <code>sharpe_arr</code> descrevem uma nuvem de pontos no plano risco-retorno,
+    revelando visualmente o formato do espaço de possibilidades — inclusive seu limite superior, que se
+    aproxima da fronteira eficiente teórica.
+  </p>
+
+  <div class="side-note fi">
+    <strong>Por que simular antes de otimizar?</strong> A simulação de Monte Carlo não garante encontrar o
+    ótimo exato, mas oferece uma visão panorâmica do problema — mostra a forma da nuvem de risco-retorno,
+    identifica a ordem de grandeza do melhor Sharpe possível e serve como validação visual para o resultado
+    da otimização matemática que vem a seguir.
+  </div>
+
+  <div class="ornament fi">— ✦ —</div>
+
+  <!-- ─── SEÇÃO 6 ─── -->
+  <h2 id="s6" class="fi"><span class="section-tag">Métrica</span>Índice de Sharpe Máximo</h2>
+
+  <p class="fi">
+    Entre as 10.000 simulações, o portfólio de maior Índice de Sharpe é identificado com
+    <code>sharpe_arr.argmax()</code> — o índice da melhor combinação de pesos encontrada por simulação pura.
+    Extrair essa alocação revela como o capital deveria, aproximadamente, ser distribuído entre os dez ativos
+    para maximizar o retorno ajustado ao risco.
+  </p>
+
+  <div class="filing-strip fi">
+    <div class="filing-item"><span class="filing-val">10K</span><span class="filing-lbl">Portfólios Testados</span></div>
+    <div class="filing-item"><span class="filing-val">↑</span><span class="filing-lbl">Sharpe Máximo Identificado</span></div>
+    <div class="filing-item"><span class="filing-val">10</span><span class="filing-lbl">Pesos Otimizáveis</span></div>
+    <div class="filing-item"><span class="filing-val">100%</span><span class="filing-lbl">Capital Alocado</span></div>
+  </div>
+
+  <table class="data-table fi">
+    <thead><tr><th>Faixa do Índice de Sharpe</th><th>Interpretação</th></tr></thead>
+    <tbody>
+      <tr><td>&gt; 1</td><td>Boa — o retorno em excesso compensa adequadamente o risco assumido</td></tr>
+      <tr><td>&gt; 2</td><td>Muito boa — retorno em excesso significativamente maior por unidade de risco</td></tr>
+      <tr><td>&gt; 3</td><td>Excepcional — investimento de altíssima performance ajustada ao risco</td></tr>
+    </tbody>
+  </table>
+
+  <p class="fi">
+    O gráfico de dispersão que cruza volatilidade (eixo x) e retorno (eixo y), colorido pelo valor do
+    Sharpe Ratio, é a forma mais direta de visualizar o resultado: quanto mais "quente" a cor de um ponto,
+    melhor a relação risco-retorno daquele portfólio simulado — e o ponto de maior Sharpe se destaca
+    visualmente como o vértice superior dessa nuvem.
+  </p>
+
+  <div class="ornament fi">— ✦ —</div>
+
+  <!-- ─── SEÇÃO 7 ─── -->
+  <h2 id="s7" class="fi"><span class="section-tag">Otimização</span>Programação Não Linear com SLSQP</h2>
+
+  <p class="fi">
+    A simulação aleatória tem um limite: por maior que seja o número de tentativas, ela nunca garante ter
+    encontrado o ótimo exato — apenas uma boa aproximação. Para resolver isso com precisão matemática, o
+    projeto recorre à função <code>scipy.optimize.minimize</code> com o método
+    <strong>SLSQP (Sequential Least Squares Programming)</strong>, um algoritmo de otimização não linear
+    com suporte nativo a restrições de igualdade e limites de variável.
+  </p>
+
+  <p class="fi">
+    Como algoritmos de otimização em geral resolvem problemas de <em>minimização</em>, e o objetivo aqui é
+    <em>maximizar</em> o Índice de Sharpe, a solução é minimizar o seu negativo — a mesma lógica usada no
+    treinamento de praticamente qualquer modelo de Inteligência Artificial baseado em gradiente.
+  </p>
+
+  <div class="code-block fi">
+    <div class="code-header">
+      <span class="code-tag">Python</span>
+      <span class="code-title">otimizacao_sharpe.py</span>
+    </div>
+    <pre><code><span class="tk-kw">def</span> <span class="tk-fn">eng_ia_get_ret_vol_sr</span>(weights):
+    weights = np.<span class="tk-fn">array</span>(weights)
+    ret = np.<span class="tk-fn">sum</span>(media_retornos * weights) * <span class="tk-fn">len</span>(retornos)
+    vol = np.<span class="tk-fn">sqrt</span>(np.<span class="tk-fn">dot</span>(weights.T, np.<span class="tk-fn">dot</span>(cov_matrix * <span class="tk-fn">len</span>(retornos), weights)))
+    sr  = ret / vol
+    <span class="tk-kw">return</span> np.<span class="tk-fn">array</span>([ret, vol, sr])
+
+<span class="tk-kw">def</span> <span class="tk-fn">eng_ia_neg_sharpe</span>(weights):
+    <span class="tk-cmt"># Minimizar o negativo == maximizar o Sharpe Ratio</span>
+    <span class="tk-kw">return</span> <span class="tk-fn">eng_ia_get_ret_vol_sr</span>(weights)[<span class="tk-num">2</span>] * -<span class="tk-num">1</span>
+
+<span class="tk-kw">def</span> <span class="tk-fn">eng_ia_check_sum</span>(weights):
+    <span class="tk-cmt"># Restrição de igualdade: a soma dos pesos deve ser 1</span>
+    <span class="tk-kw">return</span> np.<span class="tk-fn">sum</span>(weights) - <span class="tk-num">1</span>
+
+cons     = ({<span class="tk-str">'type'</span>: <span class="tk-str">'eq'</span>, <span class="tk-str">'fun'</span>: eng_ia_check_sum})
+limites  = <span class="tk-fn">tuple</span>((<span class="tk-num">0.0</span>, <span class="tk-num">1.0</span>) <span class="tk-kw">for</span> asset <span class="tk-kw">in</span> <span class="tk-fn">range</span>(<span class="tk-num">10</span>))
+init_guess = [<span class="tk-num">0.1</span> <span class="tk-kw">for</span> i <span class="tk-kw">in</span> <span class="tk-fn">range</span>(<span class="tk-num">10</span>)]
+
+resultado_otimizacao = <span class="tk-fn">minimize</span>(eng_ia_neg_sharpe,
+                                init_guess,
+                                method      = <span class="tk-str">'SLSQP'</span>,
+                                bounds      = limites,
+                                constraints = cons)</code></pre>
+  </div>
+
+  <p class="fi">
+    A chamada de <code>minimize()</code> recebe a função objetivo, um palpite inicial igualitário
+    (10% em cada ativo), o método SLSQP, os limites individuais de cada peso (entre 0% e 100%) e a
+    restrição de que a soma dos pesos seja exatamente 1. O resultado retorna, entre outros campos, o array
+    <code>x</code> com a alocação ótima exata de capital entre os dez ativos.
+  </p>
+
+  <div class="callout fi">
+    <div class="callout-tag">Interpretando o Resultado</div>
+    <p>
+      Um campo <strong>success: True</strong> confirma que o algoritmo convergiu sem erros. O vetor de
+      pesos ótimos frequentemente concentra a alocação em poucos ativos — pesos próximos de zero indicam
+      que aquele ativo contribui pouco ou nada para maximizar o Sharpe Ratio do portfólio, dado o
+      comportamento histórico de retorno e correlação observado no período analisado.
+    </p>
+  </div>
+
+  <div class="ornament fi">— ✦ —</div>
+
+  <!-- ─── SEÇÃO 8 ─── -->
+  <h2 id="s8" class="fi"><span class="section-tag">Fronteira</span>Construindo a Fronteira Eficiente</h2>
+
+  <p class="fi">
+    Encontrar o portfólio de Sharpe máximo é apenas um ponto da fronteira. Para desenhá-la por completo,
+    o projeto repete a otimização — desta vez minimizando a <strong>volatilidade</strong>, não o Sharpe —
+    para uma sequência de retornos-alvo, do menor ao maior possível. Cada execução responde à pergunta:
+    "qual é o menor risco possível para entregar exatamente este retorno?"
+  </p>
+
+  <div class="code-block fi">
+    <div class="code-header">
+      <span class="code-tag">Python</span>
+      <span class="code-title">fronteira_eficiente.py</span>
+    </div>
+    <pre><code>frontier_y = np.<span class="tk-fn">linspace</span>(<span class="tk-num">0.0</span>, <span class="tk-num">0.60</span>, num = <span class="tk-num">200</span>)
+frontier_x = []
+
+<span class="tk-kw">def</span> <span class="tk-fn">eng_ia_retorna_volatilidade</span>(weights):
+    <span class="tk-kw">return</span> <span class="tk-fn">eng_ia_get_ret_vol_sr</span>(weights)[<span class="tk-num">1</span>]
+
+<span class="tk-kw">for</span> retorno_possivel <span class="tk-kw">in</span> frontier_y:
+
+    <span class="tk-cmt"># Restrições: soma dos pesos = 1 E retorno do portfólio = retorno-alvo</span>
+    cons = ({<span class="tk-str">'type'</span>: <span class="tk-str">'eq'</span>, <span class="tk-str">'fun'</span>: eng_ia_check_sum},
+            {<span class="tk-str">'type'</span>: <span class="tk-str">'eq'</span>, <span class="tk-str">'fun'</span>: <span class="tk-kw">lambda</span> w: <span class="tk-fn">eng_ia_get_ret_vol_sr</span>(w)[<span class="tk-num">0</span>] - retorno_possivel})
+
+    resultado = <span class="tk-fn">minimize</span>(eng_ia_retorna_volatilidade,
+                         init_guess, method = <span class="tk-str">'SLSQP'</span>,
+                         bounds = limites, constraints = cons)
+
+    frontier_x.<span class="tk-fn">append</span>(resultado[<span class="tk-str">'fun'</span>])</code></pre>
+  </div>
+
+  <p class="fi">
+    Ao final do laço, <code>frontier_x</code> e <code>frontier_y</code> formam a curva da fronteira
+    eficiente — traçada sobre a nuvem de portfólios simulados no gráfico de risco versus retorno. Nos dados
+    deste projeto, o retorno máximo alcançável no período gira em torno de <strong>0,6</strong> com risco
+    próximo de <strong>0,22</strong>, enquanto o retorno mínimo viável fica perto de <strong>0,01</strong>
+    com risco de apenas <strong>0,05</strong>.
+  </p>
+
+  <p class="fi">
+    A curva resultante confirma visualmente a teoria: nenhum ponto simulado aparece à esquerda da fronteira,
+    porque nenhuma combinação de pesos consegue entregar mais retorno com menos risco do que o limite
+    matemático calculado pela otimização.
+  </p>
+
+  <div class="ornament fi">— ✦ —</div>
+
+  <!-- ─── SEÇÃO 9 ─── -->
+  <h2 id="s9" class="fi"><span class="section-tag">CAPM</span>Security Market Line</h2>
+
+  <p class="fi">
+    Com o portfólio ótimo em mãos, o projeto avança para o <strong>Capital Asset Pricing Model (CAPM)</strong>
+    e sua representação gráfica, a <strong>Security Market Line (SML)</strong> — uma reta que relaciona o
+    risco sistemático de um ativo (medido pelo seu <em>beta</em>) ao retorno esperado que o mercado exige
+    para assumir esse risco.
+  </p>
+
+  <p class="fi">
+    O beta de cada ativo é calculado comparando seu retorno em excesso sobre a taxa livre de risco com o
+    prêmio de risco do mercado como um todo. Ativos acima da SML estão subvalorizados — entregam mais
+    retorno do que o esperado para seu nível de risco sistemático; ativos abaixo dela estão sobrevalorizados.
+  </p>
+
+  <div class="code-block fi">
+    <div class="code-header">
+      <span class="code-tag">Python</span>
+      <span class="code-title">security_market_line.py</span>
+    </div>
+    <pre><code>rf  = <span class="tk-num">0.015</span>  <span class="tk-cmt"># Taxa livre de risco</span>
+mrp = market_er - rf  <span class="tk-cmt"># Prêmio de risco de mercado</span>
+
+<span class="tk-cmt"># Beta de cada ativo: sensibilidade ao risco sistemático</span>
+asset1_beta = (asset1_er - rf) / (market_er - rf)
+asset2_beta = (asset2_er - rf) / (market_er - rf)
+asset3_beta = (asset3_er - rf) / (market_er - rf)
+
+<span class="tk-cmt"># Equação da Security Market Line</span>
+betas = np.<span class="tk-fn">linspace</span>(<span class="tk-num">0</span>, <span class="tk-num">2</span>, <span class="tk-num">100</span>)
+sml   = rf + betas * (market_er - rf)</code></pre>
+  </div>
+
+  <div class="side-note fi">
+    <strong>Taxa livre de risco de 1,5%</strong> foi adotada como referência para o cálculo do prêmio de
+    risco de mercado e do beta de cada ativo — o ponto de partida teórico de qualquer análise de CAPM,
+    representando o retorno de um investimento hipoteticamente sem risco de crédito ou de mercado.
+  </div>
+
+  <div class="ornament fi">— ✦ —</div>
+
+  <!-- ─── SEÇÃO 10 ─── -->
+  <h2 id="s10" class="fi"><span class="section-tag">Síntese</span>Resultados e Interpretação</h2>
+
+  <p class="fi">
+    O pipeline completo entrega três produtos analíticos complementares: a <strong>alocação ótima de Sharpe
+    máximo</strong>, a <strong>alocação de risco mínimo</strong> e a <strong>curva completa da fronteira
+    eficiente</strong> — cada um respondendo a um perfil diferente de investidor.
+  </p>
+
+  <ol class="flow-steps fi">
+    <li>Os preços de fechamento de dez ativos de tecnologia são baixados e convertidos em retornos percentuais diários.</li>
+    <li>10.000 portfólios com pesos aleatórios são simulados para mapear visualmente o espaço de risco e retorno.</li>
+    <li>O Índice de Sharpe de cada simulação é calculado, revelando aproximadamente onde está o melhor trade-off.</li>
+    <li>A otimização SLSQP encontra, com precisão matemática, os pesos exatos que maximizam o Sharpe Ratio.</li>
+    <li>A mesma técnica de otimização, repetida para uma sequência de retornos-alvo, traça a fronteira eficiente completa.</li>
+    <li>A Security Market Line contextualiza os ativos individuais dentro da lógica de risco sistemático do CAPM.</li>
+  </ol>
+
+  <div class="dossier-highlight fi">
+    <span class="stamp">Destaque</span>
+    <div class="dc-num">Portfólio de Sharpe Máximo</div>
+    <div class="dc-title">Alocação Otimizada Matematicamente via SLSQP</div>
+    <p>
+      A alocação encontrada pela otimização — e não pela simulação aleatória — é a resposta definitiva do
+      projeto: os pesos exatos, entre os dez ativos analisados, que historicamente maximizariam o retorno
+      ajustado ao risco no período de janeiro a março de 2024, respeitando a restrição de alocação total de 100% do capital.
+    </p>
+  </div>
+
+  <div class="ornament fi">— ✦ —</div>
+
+  <!-- ─── SEÇÃO 11 ─── -->
+  <div class="conclusion fi" id="s11">
+    <div class="conclusion-tag">Encerramento</div>
+    <p>
+      Este projeto percorre, do início ao fim, o ciclo completo da otimização quantitativa de portfólio:
+      da coleta de dados de mercado à simulação estocástica, da formulação matemática do problema de
+      Markowitz à sua resolução numérica com <strong>SciPy</strong>, e da fronteira eficiente à precificação
+      de risco sistemático via <strong>CAPM</strong>.
+    </p>
+    <p>
+      O ponto central da jornada é a transição de uma abordagem por <strong>tentativa e erro</strong> — a
+      simulação de Monte Carlo, útil para visualizar o problema — para uma abordagem <strong>analítica e
+      exata</strong>, na qual um algoritmo de otimização não linear encontra matematicamente o ótimo global
+      dentro das restrições impostas. Essa mesma lógica de minimizar uma função objetivo sujeita a
+      restrições é o alicerce de praticamente todo treinamento de modelos de Inteligência Artificial.
+    </p>
+    <p>
+      <strong>A Engenharia Financeira com IA não substitui o julgamento do investidor — ela fundamenta suas
+      decisões em matemática rigorosa.</strong> E é exatamente essa combinação entre dados reais de mercado,
+      simulação e otimização que transforma uma intuição sobre diversificação em uma alocação de capital
+      cientificamente defensável.
+    </p>
+  </div>
+
+</div>
+
+<!-- ════════════════ FOOTER ════════════════ -->
+<footer>
+  <p><strong>Jonh Selmo de Souza do Nascimento</strong></p>
+  <p style="margin-top: 8px;">Projeto 3 — Fronteira Eficiente e Otimização Matemática de Portfólio · Engenharia Financeira com Inteligência Artificial · Data Science Academy</p>
+</footer>
+
+<script>
+  const bar = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+    bar.style.width = pct + '%';
+  });
+
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('v'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
+
+</body></html>
